@@ -1,18 +1,19 @@
 package com.ym.yitter.net;
 
 import android.content.Context;
-import android.provider.ContactsContract;
+import com.ym.yitter.Constants;
+import org.scribe.builder.ServiceBuilder;
+import org.scribe.builder.api.TwitterApi;
 
 /**
  * Created by Yuriy Myronovych on 20/08/2015.
  */
 public class DataAccess {
     private static DataAccess instance;
-    private TwitterServiceClientAsync client;
+    private TwitterClient twitterClient;
 
     public static void init(Context ctx) {
         DataAccess dataAccess = new DataAccess();
-        dataAccess.client = new TwitterServiceClientAsync(new TwitterServiceClient(), ctx);
         init(dataAccess);
     }
 
@@ -24,7 +25,20 @@ public class DataAccess {
         return instance;
     }
 
-    public TwitterServiceClientAsync getClient() {
-        return client;
+    public AuthRequestToken startAuth(Context ctx) {
+        return new AuthRequestToken(ctx, new ServiceBuilder()
+                .provider(TwitterApi.class)
+                .apiKey(Constants.API_KEY)
+                .apiSecret(Constants.API_SECRET)
+                .callback(Constants.CALLBACK_URL)
+                .build());
+    }
+
+    public TwitterClient getTwitterClient() {
+        return twitterClient;
+    }
+
+    public void setTwitterClient(TwitterClient twitterClient) {
+        this.twitterClient = twitterClient;
     }
 }

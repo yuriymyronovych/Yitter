@@ -9,13 +9,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import com.ym.yitter.ProgressAsyncTask;
 import com.ym.yitter.R;
 import com.ym.yitter.data.Tweet;
 import com.ym.yitter.net.DataAccess;
 import com.ym.yitter.net.DataListener;
-import com.ym.yitter.net.TwitterServiceClient;
-import com.ym.yitter.net.TwitterServiceClientAsync;
+import com.ym.yitter.net.TwitterClient;
 
 import java.util.Collections;
 import java.util.List;
@@ -28,7 +26,7 @@ public class TimelineFragment extends NavigationFragment {
     private TweetAdapter adapter;
     private SwipeRefreshLayout swipeRefresh;
     private EditText newTweet;
-    private TwitterServiceClientAsync client = DataAccess.getInstance().getClient();
+    private TwitterClient client = DataAccess.getInstance().getTwitterClient();
 
     @Nullable
     @Override
@@ -52,7 +50,7 @@ public class TimelineFragment extends NavigationFragment {
         parent.findViewById(R.id.postTweet).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                client.postTweet(newTweet.getText().toString(), new DataListener<Tweet>() {
+                client.postTweetAsync(newTweet.getText().toString(), new DataListener<Tweet>() {
                     @Override
                     public void onResult(Tweet tweet) {
                         adapter.insert(tweet);
@@ -74,7 +72,7 @@ public class TimelineFragment extends NavigationFragment {
 
     private void fetchData() {
         swipeRefresh.setRefreshing(true);
-        client.getTimeline(new DataListener<List<Tweet>>() {
+        client.getTimelineAsync(new DataListener<List<Tweet>>() {
             @Override
             public void onResult(List<Tweet> tweets) {
                 swipeRefresh.setRefreshing(false);

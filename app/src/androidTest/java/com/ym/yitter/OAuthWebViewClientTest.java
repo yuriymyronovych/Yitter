@@ -10,21 +10,19 @@ import static org.mockito.Mockito.*;
 public class OAuthWebViewClientTest extends TestCase {
     
     public void testShouldOverrideUrlLoading() throws Exception {
-        TestDataHelper.OauthUrlData data = TestDataHelper.buildValidUrlData();
         OAuthWebViewClient.Listener listener = mock(OAuthWebViewClient.Listener.class);
-        OAuthWebViewClient client = new OAuthWebViewClient(data.callback, listener);
-        client.shouldOverrideUrlLoading(null, data.url);
+        OAuthWebViewClient client = new OAuthWebViewClient("http://www.yitter.com", listener);
+        client.shouldOverrideUrlLoading(null, "http://www.yitter.com/?oauth_verifier=token");
 
-        verify(listener).onTokenReceived(data.token);
+        verify(listener).onTokenReceived("token");
     }
 
     public void testShouldOverrideUrlLoadingFailOnWrongCallback() throws Exception {
-        TestDataHelper.OauthUrlData data = TestDataHelper.buildNotValidUrlData();
 
         OAuthWebViewClient.Listener listener = mock(OAuthWebViewClient.Listener.class);
-        OAuthWebViewClient client = new OAuthWebViewClient(Constants.CALLBACK_URL, listener);
-        client.shouldOverrideUrlLoading(null, data.url);
+        OAuthWebViewClient client = new OAuthWebViewClient("http://www.google.com", listener);
+        client.shouldOverrideUrlLoading(null, "http://www.yitter.com/?oauth_verifier=token");
 
-        verify(listener, never()).onTokenReceived(data.token);
+        verify(listener, never()).onTokenReceived("token");
     }
 }

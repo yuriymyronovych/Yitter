@@ -1,29 +1,25 @@
 package com.ym.yitter.fragment;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
+import com.ym.yitter.Constants;
 import com.ym.yitter.OAuthWebViewClient;
-import com.ym.yitter.ProgressAsyncTask;
-import com.ym.yitter.net.DataAccess;
-import com.ym.yitter.net.DataListener;
-import com.ym.yitter.net.TwitterServiceClient;
-import com.ym.yitter.net.TwitterServiceClientAsync;
+import com.ym.yitter.net.*;
 
 /**
  * Created by Yuriy Myronovych on 19/08/2015.
  */
 public class AuthFragment extends NavigationFragment {
     private WebView view;
-    private TwitterServiceClientAsync client = DataAccess.getInstance().getClient();
+    private AuthAccessToken authAccessToken;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = new WebView(inflater.getContext());
-        view.setWebViewClient(new OAuthWebViewClient(client.getCallbackUrl(), new OAuthWebViewClient.Listener() {
+        view.setWebViewClient(new OAuthWebViewClient(Constants.CALLBACK_URL, new OAuthWebViewClient.Listener() {
             @Override
             public void onTokenReceived(String token) {
                 onVerify(token);
@@ -33,9 +29,9 @@ public class AuthFragment extends NavigationFragment {
     }
 
     protected void onVerify(String verifier) {
-        client.prepareAccessToken(verifier, new DataListener<Void>() {
+        authAccessToken.createClientAsync(verifier, new DataListener<TwitterClient>() {
             @Override
-            public void onResult(Void aVoid) {
+            public void onResult(TwitterClient client) {
                 getNavigation().showTimeline();
             }
         });
@@ -45,10 +41,12 @@ public class AuthFragment extends NavigationFragment {
     public void onStart() {
         super.onStart();
 
-        client.prepareRequestAndGetUrl(new DataListener<String>() {
+        AuthRequestToken authRequest = DataAccess.getInstance().startAuth(getActivity());
+        authRequest.createAccessTokenAsync(new DataListener<AuthAccessToken>() {
             @Override
-            public void onResult(String url) {
-                view.loadUrl(url);
+            public void onResult(AuthAccessToken authAccessToken) {
+                AuthFragment.this.authAccessToken = authAccessToken;
+                view.loadUrl(authAccessToken.getAuthUrl());
             }
         });
     }

@@ -36,6 +36,6 @@ public class Utils {
     }
 
     public static String generateHeader(Tweet tweet) {
-        return tweet.getUser().getName() + " @" + tweet.getUser().getScreenName() + "\t" + Utils.getTimeAgo(tweet.getCreatedAt());
+        return tweet.getUser().getName() + " @" + tweet.getUser().getScreenName() + " " + Utils.getTimeAgo(tweet.getCreatedAt());
     }
 }

@@ -12,24 +12,22 @@ import java.util.Date;
 public class UtilsTest extends TestCase {
 
     public void testExtractVerifier() throws Exception {
-        TestDataHelper.OauthUrlData data = TestDataHelper.buildValidUrlData();
-
-        String extracted = Utils.extractVerifier(data.url);
-        assertEquals(data.token, extracted);
+        String extracted = Utils.extractVerifier("http://www.yitter.com/?oauth_verifier=token");
+        assertEquals("token", extracted);
     }
 
     public void testGetTimeAgo() throws Exception {
-        long ms = System.currentTimeMillis() - 1000;
-        assertTrue(Utils.getTimeAgo(new Date(ms)).contains("s"));
+        long ms = System.currentTimeMillis() - 1001;
+        assertEquals("1s ago", Utils.getTimeAgo(new Date(ms)));
 
         ms -= 1000 * 60;
-        assertTrue(Utils.getTimeAgo(new Date(ms)).contains("m"));
+        assertEquals("1m ago", Utils.getTimeAgo(new Date(ms)));
 
         ms -= 1000 * 60 * 60;
-        assertTrue(Utils.getTimeAgo(new Date(ms)).contains("h"));
+        assertEquals("1h ago", Utils.getTimeAgo(new Date(ms)));
 
         ms -= 1000 * 60 * 60 * 24;
-        assertTrue(Utils.getTimeAgo(new Date(ms)).contains("d"));
+        assertEquals("1d ago", Utils.getTimeAgo(new Date(ms)));
     }
 
     public void testGenerateHeader() throws Exception {
@@ -41,11 +39,6 @@ public class UtilsTest extends TestCase {
         tweet.setCreatedAt(new Date());
 
 
-        String header = Utils.generateHeader(tweet);
-        assertTrue(header.contains(tweet.getUser().getName()));
-        assertTrue(header.contains(tweet.getUser().getScreenName()));
-
-        String expectedTime = Utils.getTimeAgo(tweet.getCreatedAt());
-        assertTrue(header.contains(expectedTime));
+        assertEquals("name @screenn 0s ago", Utils.generateHeader(tweet));
     }
 }
