@@ -1,7 +1,6 @@
 package com.ym.yitter.net;
 
 import android.content.Context;
-import com.squareup.picasso.Downloader;
 import com.ym.yitter.data.Tweet;
 import junit.framework.TestCase;
 import org.junit.Before;
@@ -12,7 +11,8 @@ import org.scribe.oauth.OAuthService;
 
 import java.util.List;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * Created by Yuriy Myronovych on 21/08/2015.

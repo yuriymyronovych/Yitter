@@ -5,7 +5,8 @@ import junit.framework.TestCase;
 import org.scribe.model.Token;
 import org.scribe.oauth.OAuthService;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * Created by Yuriy Myronovych on 21/08/2015.

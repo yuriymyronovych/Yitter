@@ -2,16 +2,14 @@ package com.ym.yitter.net;
 
 import android.content.Context;
 import com.google.gson.reflect.TypeToken;
-import com.ym.yitter.Constants;
 import com.ym.yitter.ProgressAsyncTask;
 import com.ym.yitter.data.GsonFactory;
 import com.ym.yitter.data.Tweet;
-import org.scribe.builder.ServiceBuilder;
-import org.scribe.builder.api.TwitterApi;
-import org.scribe.model.*;
+import org.scribe.model.OAuthRequest;
+import org.scribe.model.Response;
+import org.scribe.model.Token;
 import org.scribe.oauth.OAuthService;
 
-import java.net.URLEncoder;
 import java.util.List;
 
 /**
