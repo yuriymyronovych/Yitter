@@ -33,6 +33,7 @@ public class TwitterClientTest extends TestCase {
         Response response = mock(Response.class);
         when(client.factory.getTimelineRequest()).thenReturn(request);
         when(request.send()).thenReturn(response);
+        when(response.isSuccessful()).thenReturn(true);
         when(response.getBody()).thenReturn("[{\"text\":\"message\"}]");
 
         List<Tweet> timeline = client.getTimeline();
@@ -44,6 +45,7 @@ public class TwitterClientTest extends TestCase {
         Response response = mock(Response.class);
         when(client.factory.getPostTweetRequest("message")).thenReturn(request);
         when(request.send()).thenReturn(response);
+        when(response.isSuccessful()).thenReturn(true);
         when(response.getBody()).thenReturn("{\"text\":\"message\"}");
 
         Tweet tweet = client.postTweet("message");

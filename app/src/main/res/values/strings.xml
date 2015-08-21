@@ -6,4 +6,5 @@
     <string name="tweet">Tweet</string>
     <string name="new_status">tell us your status here</string>
     <string name="loading">loading</string>
+    <string name="failed">inet request failed, plz try again</string>
 </resources>

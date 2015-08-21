@@ -1,8 +1,10 @@
 package com.ym.yitter.net;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import com.google.gson.reflect.TypeToken;
 import com.ym.yitter.ProgressAsyncTask;
+import com.ym.yitter.R;
 import com.ym.yitter.data.GsonFactory;
 import com.ym.yitter.data.Tweet;
 import org.scribe.model.OAuthRequest;
@@ -39,7 +41,11 @@ public class TwitterClient {
         OAuthRequest request = factory.getPostTweetRequest(message);
         service.signRequest(accessToken, request);
         Response response = request.send();
-        return GsonFactory.getGson().fromJson(response.getBody(), Tweet.class);
+        if (response.isSuccessful()) {
+            return GsonFactory.getGson().fromJson(response.getBody(), Tweet.class);
+        } else {
+            return null;
+        }
     }
 
     public void getTimelineAsync(DataListener<List<Tweet>> listener) {
@@ -56,6 +62,14 @@ public class TwitterClient {
             @Override
             protected Tweet doInBackground(Void... params) {
                 return postTweet(message);
+            }
+
+            @Override
+            protected void onPostExecute(Tweet tweet) {
+                super.onPostExecute(tweet);
+                if (tweet == null) {
+                    new AlertDialog.Builder(ctx).setMessage(ctx.getString(R.string.failed)).show();
+                }
             }
         }.execute();
     }

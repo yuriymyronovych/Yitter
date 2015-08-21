@@ -55,12 +55,14 @@ public class TimelineFragment extends NavigationFragment {
                 client.postTweetAsync(newTweet.getText().toString(), new DataListener<Tweet>() {
                     @Override
                     public void onResult(Tweet tweet) {
-                        adapter.insert(tweet);
-                        adapter.notifyDataSetChanged();
+                        if (tweet != null) {
+                            adapter.insert(tweet);
+                            adapter.notifyDataSetChanged();
 
-                        InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                        imm.hideSoftInputFromWindow(newTweet.getWindowToken(), 0);
-                        newTweet.setText("");
+                            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                            imm.hideSoftInputFromWindow(newTweet.getWindowToken(), 0);
+                            newTweet.setText("");
+                        }
                     }
                 });
 
