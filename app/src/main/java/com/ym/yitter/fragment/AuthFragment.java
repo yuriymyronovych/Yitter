@@ -46,8 +46,10 @@ public class AuthFragment extends NavigationFragment {
         authRequest.createAccessTokenAsync(new DataListener<AccessToken>() {
             @Override
             public void onResult(AccessToken accessToken) {
-                AuthFragment.this.accessToken = accessToken;
-                view.loadUrl(accessToken.getAuthUrl());
+                if (isAdded()) {
+                    AuthFragment.this.accessToken = accessToken;
+                    view.loadUrl(accessToken.getAuthUrl());
+                }
             }
         });
     }
