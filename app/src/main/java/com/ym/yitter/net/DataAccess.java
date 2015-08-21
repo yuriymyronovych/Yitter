@@ -16,6 +16,9 @@ public class DataAccess {
         return instance;
     }
 
+    /**
+     * startAuth -> RequestToken -> AccessToken -> TwitterClient
+     */
     public RequestToken startAuth(Context ctx) {
         return new RequestToken(ctx, new ServiceBuilder()
                 .provider(TwitterApi.class)
