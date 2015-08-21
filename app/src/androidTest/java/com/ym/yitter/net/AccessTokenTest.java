@@ -12,7 +12,7 @@ import static org.mockito.Mockito.*;
 /**
  * Created by Yuriy Myronovych on 21/08/2015.
  */
-public class AuthAccessTokenTest extends TestCase {
+public class AccessTokenTest extends TestCase {
 
     public void testCreateClient() throws Exception {
         Context ctx = mock(Context.class);
@@ -21,7 +21,7 @@ public class AuthAccessTokenTest extends TestCase {
         Token accessToken = mock(Token.class);
         when(service.getAccessToken(Matchers.eq(requestToken), Matchers.<Verifier>anyObject())).thenReturn(accessToken);
 
-        AuthAccessToken token = new AuthAccessToken(ctx, service, "url", requestToken);
+        AccessToken token = new AccessToken(ctx, service, "url", requestToken);
         TwitterClient client = token.createClient("verifier");
         assertEquals(accessToken, client.accessToken);
     }

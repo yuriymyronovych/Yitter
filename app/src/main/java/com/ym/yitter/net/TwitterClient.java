@@ -21,22 +21,24 @@ public class TwitterClient {
     protected Context ctx;
     protected OAuthService service;
     protected Token accessToken;
+    protected TwitterRequestFactory factory;
 
-    protected TwitterClient(Context ctx, OAuthService service, Token accessToken) {
+    protected TwitterClient(Context ctx, OAuthService service, Token accessToken, TwitterRequestFactory factory) {
         this.service = service;
         this.accessToken = accessToken;
         this.ctx = ctx;
+        this.factory = factory;
     }
 
     protected List<Tweet> getTimeline() {
-        OAuthRequest request = new OAuthRequest(Verb.GET, "https://api.twitter.com/1.1/statuses/home_timeline.json");
+        OAuthRequest request = factory.getTimelineRequest();
         service.signRequest(accessToken, request);
         Response response = request.send();
         return (List<Tweet>) GsonFactory.getGson().fromJson(response.getBody(), new TypeToken<List<Tweet>>(){}.getType());
     }
 
     protected Tweet postTweet(String message) {
-        OAuthRequest request = new OAuthRequest(Verb.POST, "https://api.twitter.com/1.1/statuses/update.json?status=" + URLEncoder.encode(message));
+        OAuthRequest request = factory.getPostTweetRequest(message);
         service.signRequest(accessToken, request);
         Response response = request.send();
         return GsonFactory.getGson().fromJson(response.getBody(), Tweet.class);

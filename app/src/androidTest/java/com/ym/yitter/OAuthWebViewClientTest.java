@@ -23,6 +23,6 @@ public class OAuthWebViewClientTest extends TestCase {
         OAuthWebViewClient client = new OAuthWebViewClient("http://www.google.com", listener);
         client.shouldOverrideUrlLoading(null, "http://www.yitter.com/?oauth_verifier=token");
 
-        verify(listener, never()).onTokenReceived("token");
+        verify(listener, never()).onTokenReceived(anyString());
     }
 }

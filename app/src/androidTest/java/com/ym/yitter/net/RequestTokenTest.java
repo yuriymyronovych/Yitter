@@ -10,7 +10,7 @@ import static org.mockito.Mockito.*;
 /**
  * Created by Yuriy Myronovych on 21/08/2015.
  */
-public class AuthRequestTokenTest extends TestCase {
+public class RequestTokenTest extends TestCase {
 
     public void testCreateAccessToken() {
         Context ctx = mock(Context.class);
@@ -18,9 +18,9 @@ public class AuthRequestTokenTest extends TestCase {
         Token requestToken = mock(Token.class);
         when(service.getRequestToken()).thenReturn(requestToken);
         when(service.getAuthorizationUrl(requestToken)).thenReturn("url");
-        AuthRequestToken token = new AuthRequestToken(ctx, service);
+        RequestToken token = new RequestToken(ctx, service);
 
-        AuthAccessToken accessToken = token.createAccessToken();
+        AccessToken accessToken = token.createAccessToken();
         assertEquals("url", accessToken.getAuthUrl());
         assertEquals(requestToken, accessToken.requestToken);
     }

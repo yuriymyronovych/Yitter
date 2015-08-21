@@ -9,24 +9,15 @@ import org.scribe.builder.api.TwitterApi;
  * Created by Yuriy Myronovych on 20/08/2015.
  */
 public class DataAccess {
-    private static DataAccess instance;
+    private static DataAccess instance = new DataAccess();
     private TwitterClient twitterClient;
-
-    public static void init(Context ctx) {
-        DataAccess dataAccess = new DataAccess();
-        init(dataAccess);
-    }
-
-    public static void init(DataAccess dataAccess) {
-        instance = dataAccess;
-    }
 
     public static DataAccess getInstance() {
         return instance;
     }
 
-    public AuthRequestToken startAuth(Context ctx) {
-        return new AuthRequestToken(ctx, new ServiceBuilder()
+    public RequestToken startAuth(Context ctx) {
+        return new RequestToken(ctx, new ServiceBuilder()
                 .provider(TwitterApi.class)
                 .apiKey(Constants.API_KEY)
                 .apiSecret(Constants.API_SECRET)

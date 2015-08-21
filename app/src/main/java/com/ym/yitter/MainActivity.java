@@ -15,7 +15,6 @@ public class MainActivity extends FragmentActivity implements INavigation {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        DataAccess.init(this);
 
         showAuth();
     }

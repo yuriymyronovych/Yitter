@@ -59,9 +59,11 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
         Tweet tweet = tweets.get(i);
-        Picasso.with(viewHolder.userImage.getContext())
-                .load(tweet.getUser().getImageUrl())
-                .into(viewHolder.userImage);
+        if (tweet.getUser() != null) {
+            Picasso.with(viewHolder.userImage.getContext())
+                    .load(tweet.getUser().getImageUrl())
+                    .into(viewHolder.userImage);
+        }
 
         viewHolder.headerText.setText(Utils.generateHeader(tweet));
         viewHolder.message.setText(tweet.getText());

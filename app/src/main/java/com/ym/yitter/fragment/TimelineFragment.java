@@ -1,5 +1,6 @@
 package com.ym.yitter.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -8,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import com.ym.yitter.R;
 import com.ym.yitter.data.Tweet;
@@ -33,7 +35,7 @@ public class TimelineFragment extends NavigationFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View parent = inflater.inflate(R.layout.timeline, container, false);
         listView = (RecyclerView) parent.findViewById(R.id.listView);
-        listView.setLayoutManager(new LinearLayoutManager(inflater.getContext()));
+        listView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         adapter = new TweetAdapter(Collections.EMPTY_LIST);
         listView.setAdapter(adapter);
@@ -55,6 +57,10 @@ public class TimelineFragment extends NavigationFragment {
                     public void onResult(Tweet tweet) {
                         adapter.insert(tweet);
                         adapter.notifyDataSetChanged();
+
+                        InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(newTweet.getWindowToken(), 0);
+                        newTweet.setText("");
                     }
                 });
 

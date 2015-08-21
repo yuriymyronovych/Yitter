@@ -1,6 +1,7 @@
 package com.ym.yitter.fragment;
 
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,11 +15,11 @@ import com.ym.yitter.net.*;
  */
 public class AuthFragment extends NavigationFragment {
     private WebView view;
-    private AuthAccessToken authAccessToken;
+    private AccessToken accessToken;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = new WebView(inflater.getContext());
+        view = new WebView(getActivity());
         view.setWebViewClient(new OAuthWebViewClient(Constants.CALLBACK_URL, new OAuthWebViewClient.Listener() {
             @Override
             public void onTokenReceived(String token) {
@@ -29,9 +30,10 @@ public class AuthFragment extends NavigationFragment {
     }
 
     protected void onVerify(String verifier) {
-        authAccessToken.createClientAsync(verifier, new DataListener<TwitterClient>() {
+        accessToken.createClientAsync(verifier, new DataListener<TwitterClient>() {
             @Override
             public void onResult(TwitterClient client) {
+                DataAccess.getInstance().setTwitterClient(client);
                 getNavigation().showTimeline();
             }
         });
@@ -41,12 +43,12 @@ public class AuthFragment extends NavigationFragment {
     public void onStart() {
         super.onStart();
 
-        AuthRequestToken authRequest = DataAccess.getInstance().startAuth(getActivity());
-        authRequest.createAccessTokenAsync(new DataListener<AuthAccessToken>() {
+        RequestToken authRequest = DataAccess.getInstance().startAuth(getActivity());
+        authRequest.createAccessTokenAsync(new DataListener<AccessToken>() {
             @Override
-            public void onResult(AuthAccessToken authAccessToken) {
-                AuthFragment.this.authAccessToken = authAccessToken;
-                view.loadUrl(authAccessToken.getAuthUrl());
+            public void onResult(AccessToken accessToken) {
+                AuthFragment.this.accessToken = accessToken;
+                view.loadUrl(accessToken.getAuthUrl());
             }
         });
     }

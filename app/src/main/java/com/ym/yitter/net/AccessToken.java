@@ -9,14 +9,14 @@ import org.scribe.oauth.OAuthService;
 /**
  * Created by Yuriy Myronovych on 21/08/2015.
  */
-public class AuthAccessToken {
+public class AccessToken {
     protected Context ctx;
     protected OAuthService service;
     protected String authUrl;
     protected Token requestToken;
     protected Token accessToken;
 
-    protected AuthAccessToken(Context ctx, OAuthService service, String authUrl, Token requestToken) {
+    protected AccessToken(Context ctx, OAuthService service, String authUrl, Token requestToken) {
         this.ctx = ctx;
         this.service = service;
         this.requestToken = requestToken;
@@ -32,7 +32,7 @@ public class AuthAccessToken {
      */
     public TwitterClient createClient(String verifier) {
         accessToken = service.getAccessToken(requestToken, new Verifier(verifier));
-        return new TwitterClient(ctx, service, accessToken);
+        return new TwitterClient(ctx, service, accessToken, new TwitterRequestFactory());
     }
 
     public void createClientAsync(final String verifier, DataListener<TwitterClient> listener) {
